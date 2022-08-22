@@ -1,5 +1,7 @@
 # Neuro myKakuritsu Research Code with PyTorch
 
+## Idea
+
 You may heard of [Dropout](https://jmlr.org/papers/v15/srivastava14a.html) which is A Simple Way to Prevent Neural Networks from Overfitting.
 
 While, the author thought the neuro cells died in brain is useful, because it make neuros have ability to random cooperation and can prevent overfitting during learning.
@@ -11,3 +13,11 @@ To increasing the Neuro Network's performance with limited dataset, We can incre
 Kakuritsu means probability in English, instead of killing neuro cell, We let each synapse activation with a probability. This will make hidden layer's data Generalization during training but less memory lossing, maybe prevent overfitting better.
 
 Still Need more Experment to prove this guess.
+
+## Credit
+
+SuperHacker UEFI (Shizhuo Zhang)
+
+Cookie (Yue Fang)
+
+Research supported by Automation School, BISTU; Microsoft The Practice Space (ai-edu)
