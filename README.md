@@ -10,7 +10,7 @@ We think currently computers can only simulate fewer neuros, the random death of
 
 To increasing the Neuro Network's performance with limited dataset, We can increase the single neuro level Divergent ability, with myKakuritsu Activation.
 
-Kakuritsu means probability in English, instead of killing neuro cell, We let each synapse activation with a probability. This will make hidden layer's data Generalization during training but less memory lossing, maybe prevent overfitting better.
+Kakuritsu means probability in Japanese, instead of killing neuro cell, We let each synapse activation with a probability. This will make hidden layer's data Generalization during training but less memory lossing, maybe prevent overfitting better.
 
 Still Need more Experment to prove this guess.
 
