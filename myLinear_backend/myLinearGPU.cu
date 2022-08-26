@@ -103,10 +103,10 @@ std::vector<torch::Tensor> mylinear_cuda_forward(
 
     auto output = torch::zeros({Batchsize, Neuros}, torch::TensorOptions().device(torch::kCUDA));
 
-    void *pGPUinput = 0, *pGPUweights = 0, *pGPUoutput = 0;
-
-    AT_DISPATCH_FLOATING_TYPES(input.type(), "mylinear_cuda_forward", ([&] { pGPUinput = input.data<scalar_t>(); pGPUweights = weights.data<scalar_t>(); pGPUoutput = output.data<scalar_t>(); }));
-
+    float *pGPUinput = input.data<float>();
+    float *pGPUweights = weights.data<float>();
+    float *pGPUoutput = output.data<float>();
+    
     myCell_forward_kernel<<<Batchsize, Neuros>>>((float *)pGPUinput, (float *)pGPUweights, (float *)pGPUoutput, Neuros, InputDim);
 
     return {output};
@@ -128,29 +128,14 @@ std::vector<torch::Tensor> mylinear_cuda_backward(
     const dim3 grid1((Batchsize - 1) / 32 + 1, (KasoCellNum - 1) / 32 + 1);
     const dim3 grid2((RealCellNum - 1) / 32 + 1, (KasoCellNum - 1) / 32 + 1);
 
-    void *pGPUgrad_input, *pGPUgrad_weights, *pGPUgrad_output, *pGPUinput, *pGPUweights;
-    
-    AT_DISPATCH_FLOATING_TYPES(input.type(), "mylinear_cuda_forward", ([&] {
-			    pGPUgrad_input = grad_input.data<scalar_t>();
-			    pGPUgrad_weights = grad_weights.data<scalar_t>();
-			    pGPUgrad_output = grad_output.data<scalar_t>();
-			    pGPUinput = input.data<scalar_t>();
-			    pGPUweights = weights.data<scalar_t>();
-			    }));
-    
-    myKasoCell_backward_kernel<<<Batchsize, KasoCellNum>>>((float *)pGPUgrad_output, (float *)pGPUweights, (float *)pGPUgrad_input, KasoCellNum, RealCellNum);
+    float *pGPUgrad_input = grad_input.data<float>();
+    float *pGPUgrad_weights = grad_weights.data<float>();
+    float *pGPUgrad_output = grad_output.data<float>();
+    float *pGPUinput = input.data<float>();
+    float *pGPUweights = weights.data<float>();
 
-    AT_DISPATCH_FLOATING_TYPES(input.type(), "mylinear_cuda_backward_input", ([&] {
-        ms_demo_matmul_kernel<scalar_t><<<grid2, block>>>(
-            grad_output.data<scalar_t>(),
-            input.data<scalar_t>(),
-            grad_weights.data<scalar_t>(),
-            RealCellNum,
-            Batchsize,
-            KasoCellNum,
-            true,
-            false);
-
-        }));
+    myKasoCell_backward_kernel<<<Batchsize, KasoCellNum>>>(pGPUgrad_output, pGPUweights, pGPUgrad_input, KasoCellNum, RealCellNum);
+    ms_demo_matmul_kernel<float><<<grid2, block>>>(pGPUgrad_output, pGPUinput, pGPUgrad_weights, RealCellNum, Batchsize, KasoCellNum, true, false);
+    
     return {grad_input, grad_weights};
 }
