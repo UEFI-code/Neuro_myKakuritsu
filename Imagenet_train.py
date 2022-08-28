@@ -20,7 +20,8 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 import torchvision.models as models
 from torch.utils.data import Subset
-import KakuritsuNet
+import Resnet_Kakuritsu
+import Resnet_Dropout
 
 model_names = sorted(name for name in models.__dict__
     if name.islower() and not name.startswith("__")
@@ -29,8 +30,7 @@ model_names = sorted(name for name in models.__dict__
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training for myKakuritsu')
 parser.add_argument('data', metavar='DIR', nargs='?', default='imagenet',
                     help='path to dataset (default: imagenet)')
-parser.add_argument('-a', '--arch', metavar='ARCH', default='kakuritsu',
-                    choices=model_names,
+parser.add_argument('-a', '--arch', metavar='ARCH', default='Kakuritsu',
                     help='model architecture: ' +
                         ' | '.join(model_names) +
                         ' (default: resnet18)')
@@ -134,14 +134,12 @@ def main_worker(gpu, ngpus_per_node, args):
         dist.init_process_group(backend=args.dist_backend, init_method=args.dist_url,
                                 world_size=args.world_size, rank=args.rank)
     # create model
-    if args.arch == 'kakuritsu':
-        model = KakuritsuNet.Net()
-    elif args.pretrained:
-        print("=> using pre-trained model '{}'".format(args.arch))
-        model = models.__dict__[args.arch](pretrained=True)
-    else:
-        print("=> creating model '{}'".format(args.arch))
-        model = models.__dict__[args.arch]()
+    if args.arch == 'Kakuritsu':
+        print('Using Kakuritsu to train')
+        model = Resnet_Kakuritsu.ResNet152()
+    elif args.arch == 'Dropout':
+        print('Using Dropout to train')
+        model = Resnet_Dropout.ResNet152()
 
     if not torch.cuda.is_available():
         print('using CPU, this will be slow')
