@@ -16,6 +16,7 @@ Still Need more Experment to prove this guess.
 
 ## Usage
 
+```bash
 python3 Imagenet\_train.py \[args\] \[Dataset\_Dir\]
 
 positional arguments:
@@ -49,6 +50,7 @@ optional arguments:
                         Use multi-processing distributed training to launch N processes per node, which has N GPUs. This is the fastest way to use PyTorch for either single
                         node or multi node data parallel training
   --dummy               use fake data to benchmark
+```
 
 ## Credit
 
