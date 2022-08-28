@@ -17,7 +17,7 @@ Still Need more Experment to prove this guess.
 ## Usage
 
 ```bash
-python3 Imagenet\_train.py \[args\] \[Dataset\_Dir\]
+python3 Imagenet_train.py [args] [Dataset_Dir]
 
 positional arguments:
   DIR                   path to dataset (default: imagenet)
