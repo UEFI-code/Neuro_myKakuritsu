@@ -119,11 +119,11 @@ class ResNet152(nn.Module):
 
         self.avg_pool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = nn.Sequential(
-            nn.Dropout(p=0.5),
             myLinear(2048 * 1 * 1, 1000),
-            nn.ReLU(inplace=True),
             nn.Dropout(p=0.5),
+            nn.ReLU(True),
             myLinear(1000, classes_num),
+            nn.Dropout(p=0.5),
             nn.Softmax()
         )
 
