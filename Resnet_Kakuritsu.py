@@ -21,8 +21,8 @@ class ResNet152(nn.Module):
     def __init__(self, classes_num = 1000):
         super(ResNet152, self).__init__()
 
-        self.Kakuritsu1 = myKakuritsu_Linear_Obj(2048, 1000)
-        self.Kakuritsu2 = myKakuritsu_Linear_Obj(1000, 1000)
+        self.Kakuritsu1 = myKakuritsu_Linear_Obj(2048, 1000, 0.5)
+        self.Kakuritsu2 = myKakuritsu_Linear_Obj(1000, 1000, 0.5)
         
         self.pre = nn.Sequential(
             nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=3, bias=False),

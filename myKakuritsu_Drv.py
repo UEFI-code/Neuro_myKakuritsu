@@ -33,7 +33,7 @@ class myKakuritsu_Linear_Function(torch.autograd.Function):
         return grad_input, grad_weight, grad_weight
 
 class myKakuritsu_Linear_Obj(nn.Module):
-    def __init__(self, input_features, output_featuresi, p = 0.5):
+    def __init__(self, input_features, output_features, p = 0.5):
         super(myKakuritsu_Linear_Obj, self).__init__()
         self.input_features = input_features
         self.output_features = output_features
