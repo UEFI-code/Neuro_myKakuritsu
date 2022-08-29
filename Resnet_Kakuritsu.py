@@ -125,7 +125,6 @@ class ResNet152(nn.Module):
                 self.Kakuritsu1,
                 nn.ReLU(True),
                 self.Kakuritsu2,
-                nn.Softmax()
         )
 
     def forward(self, x):

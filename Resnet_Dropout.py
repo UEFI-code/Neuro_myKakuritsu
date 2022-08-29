@@ -124,7 +124,6 @@ class ResNet152(nn.Module):
             nn.ReLU(True),
             myLinear(1000, classes_num),
             nn.Dropout(p=0.5),
-            nn.Softmax()
         )
 
     def forward(self, x):
