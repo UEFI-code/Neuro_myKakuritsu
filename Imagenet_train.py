@@ -283,11 +283,11 @@ def main_worker(gpu, ngpus_per_node, args):
 
 
 def train(train_loader, model, criterion, optimizer, epoch, args):
-    batch_time = AverageMeter('Time', ':6.3f')
-    data_time = AverageMeter('Data', ':6.3f')
-    losses = AverageMeter('Loss', ':.4e')
-    top1 = AverageMeter('Acc@1', ':6.2f')
-    top5 = AverageMeter('Acc@5', ':6.2f')
+    batch_time = AverageMeter('BTime', ':.3f')
+    data_time = AverageMeter('DTime', ':.3f')
+    losses = AverageMeter('Loss', ':.4f')
+    top1 = AverageMeter('Acc@1', ':.2f')
+    top5 = AverageMeter('Acc@5', ':.2f')
     progress = ProgressMeter(
         len(train_loader),
         [batch_time, data_time, losses, top1, top5],
@@ -358,10 +358,10 @@ def validate(val_loader, model, criterion, args):
                 if i % args.print_freq == 0:
                     progress.display(i + 1)
 
-    batch_time = AverageMeter('Time', ':6.3f', Summary.NONE)
-    losses = AverageMeter('Loss', ':.4e', Summary.NONE)
-    top1 = AverageMeter('Acc@1', ':6.2f', Summary.AVERAGE)
-    top5 = AverageMeter('Acc@5', ':6.2f', Summary.AVERAGE)
+    batch_time = AverageMeter('Time', ':.3f', Summary.NONE)
+    losses = AverageMeter('Loss', ':.4f', Summary.NONE)
+    top1 = AverageMeter('Acc@1', ':.2f', Summary.AVERAGE)
+    top5 = AverageMeter('Acc@5', ':.2f', Summary.AVERAGE)
     progress = ProgressMeter(
         len(val_loader) + (args.distributed and (len(val_loader.sampler) * args.world_size < len(val_loader.dataset))),
         [batch_time, losses, top1, top5],
@@ -427,7 +427,7 @@ class AverageMeter(object):
         self.avg = self.sum / self.count
 
     def __str__(self):
-        fmtstr = '{name} {val' + self.fmt + '} ({avg' + self.fmt + '})'
+        fmtstr = '{name}= {val' + self.fmt + '} (Avg= {avg' + self.fmt + '})'
         return fmtstr.format(**self.__dict__)
     
     def summary(self):
@@ -435,11 +435,11 @@ class AverageMeter(object):
         if self.summary_type is Summary.NONE:
             fmtstr = ''
         elif self.summary_type is Summary.AVERAGE:
-            fmtstr = '{name} {avg:.3f}'
+            fmtstr = '{name} Avg= {avg:.3f}'
         elif self.summary_type is Summary.SUM:
-            fmtstr = '{name} {sum:.3f}'
+            fmtstr = '{name} Sum= {sum:.3f}'
         elif self.summary_type is Summary.COUNT:
-            fmtstr = '{name} {count:.3f}'
+            fmtstr = '{name} Cnt= {count:.3f}'
         else:
             raise ValueError('invalid summary type %r' % self.summary_type)
         
@@ -455,7 +455,7 @@ class ProgressMeter(object):
     def display(self, batch):
         entries = [self.prefix + self.batch_fmtstr.format(batch)]
         entries += [str(meter) for meter in self.meters]
-        print('\t'.join(entries))
+        print(' '.join(entries))
         
     def display_summary(self):
         entries = [" *"]
