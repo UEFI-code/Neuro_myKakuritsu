@@ -22,7 +22,7 @@ class ResNet152(nn.Module):
         super(ResNet152, self).__init__()
 
         self.Kakuritsu1 = myKakuritsu_Linear_Obj(2048, 1000, 0.5)
-        self.Kakuritsu2 = myKakuritsu_Linear_Obj(1000, 1000, 0.5)
+        self.Kakuritsu2 = myKakuritsu_Linear_Obj(1000, classes_num, 0.5)
         
         self.pre = nn.Sequential(
             nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=3, bias=False),
@@ -123,7 +123,9 @@ class ResNet152(nn.Module):
         self.avg_pool = nn.AdaptiveAvgPool2d((1, 1))
         self.fc = nn.Sequential(
                 self.Kakuritsu1,
-                self.Kakuritsu2
+                nn.ReLU(True),
+                self.Kakuritsu2,
+                nn.Softmax()
         )
 
     def forward(self, x):
