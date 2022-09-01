@@ -20,8 +20,10 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 import torchvision.models as models
 from torch.utils.data import Subset
-import Resnet_Kakuritsu
-import Resnet_Dropout
+import Pure_myKakuritsu
+import Pure_Dropout
+import Pure_myLinear
+import torchvision_resnet_hack
 
 model_names = sorted(name for name in models.__dict__
     if name.islower() and not name.startswith("__")
@@ -131,13 +133,36 @@ def main_worker(gpu, ngpus_per_node, args):
             args.rank = args.rank * ngpus_per_node + gpu
         dist.init_process_group(backend=args.dist_backend, init_method=args.dist_url,
                                 world_size=args.world_size, rank=args.rank)
-    # create model
+    # create base resnet152 model
+    if args.resume == '':
+        print('Loading ResNet152 PyTorch Offcial Weights')
+        baseModel = torchvision_resnet_hack.resnet152(pretrained = True, ConvOnly = True)
+    else:
+        baseModel = torchvision_resnet_hack.resnet152(pretrained = False, ConvOnly = True)
+
     if args.arch == 'Kakuritsu':
         print('Using Kakuritsu to train')
-        model = Resnet_Kakuritsu.ResNet152()
+        expModel = Pure_myKakuritsu.PureKakuritsu()
     elif args.arch == 'Dropout':
         print('Using Dropout to train')
-        model = Resnet_Dropout.ResNet152()
+        expModel = Pure_Dropout.PureDrop()
+    elif args.arch == 'White':
+        print('Using Pure myLinear to train')
+        expModel = Pure_myLinear.PureMyLinear()
+    
+    #Trick for One Model Training!
+    class OneModel(nn.Module):
+        def __init__(self, base, exp):
+            super(OneModel, self).__init__()
+            self.base = base
+            self.exp = exp
+        
+        def forward(self, x):
+            x = self.base(x)
+            x = self.exp(x)
+            return x
+
+    model = OneModel(baseModel, expModel)
 
     if not torch.cuda.is_available():
         print('using CPU, this will be slow')
@@ -173,7 +198,7 @@ def main_worker(gpu, ngpus_per_node, args):
     # define loss function (criterion), optimizer, and learning rate scheduler
     criterion = nn.CrossEntropyLoss().cuda(args.gpu)
 
-    optimizer = torch.optim.SGD(model.parameters(), args.lr,
+    optimizer = torch.optim.SGD(expModel.parameters(), args.lr,
                                 momentum=args.momentum,
                                 weight_decay=args.weight_decay)
     
