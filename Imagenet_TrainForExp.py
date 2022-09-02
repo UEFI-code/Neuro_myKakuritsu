@@ -122,7 +122,7 @@ def main_worker(gpu, ngpus_per_node, args):
     args.gpu = gpu
 
     if args.gpu is not None:
-        print("Use GPU: {} for training".format(args.gpu))
+        print("Use GPU: {} for experiment".format(args.gpu))
 
     if args.distributed:
         if args.dist_url == "env://" and args.rank == -1:
@@ -141,13 +141,13 @@ def main_worker(gpu, ngpus_per_node, args):
         baseModel = torchvision_resnet_hack.resnet152(pretrained = False, ConvOnly = True)
 
     if args.arch == 'Kakuritsu':
-        print('Using Kakuritsu to train')
+        print('Using Kakuritsu to exp')
         expModel = Pure_myKakuritsu.PureKakuritsu()
     elif args.arch == 'Dropout':
-        print('Using Dropout to train')
+        print('Using Dropout to exp')
         expModel = Pure_Dropout.PureDrop()
     elif args.arch == 'White':
-        print('Using Pure myLinear to train')
+        print('Using Pure myLinear to exp')
         expModel = Pure_myLinear.PureMyLinear()
     
     #Trick for One Model Training!

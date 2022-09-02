@@ -16,8 +16,14 @@ Still Need more Experment to prove this guess.
 
 ## Usage
 
+There are two version of experiment code.
+
+Imagenet\_TrainFromZero.py contains NO pretrained ResNet152's weight, keeps its convolutional layers and removed its linear for experiment.
+
+Imagenet\_TrainForExp.py keeps the pretrained ResNet152's weight, and model structure same as above.
+
 ```bash
-python3 Imagenet_train.py [args] [Dataset_Dir]
+python3 Imagenet_TrainForYOULIKE.py [args] [Dataset_Dir]
 
 positional arguments:
   DIR                   path to dataset (default: imagenet)
