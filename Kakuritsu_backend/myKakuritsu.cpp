@@ -29,7 +29,7 @@
 std::vector<torch::Tensor> myKakuritsu_cuda_forward(
     torch::Tensor input,
     torch::Tensor weights,
-    torch::Tensor Kakuritsu);
+    float Kakuritsu);
 
 std::vector<torch::Tensor> myKakuritsu_cuda_backward(
     torch::Tensor grad_output,
@@ -40,7 +40,7 @@ std::vector<torch::Tensor> myKakuritsu_cuda_backward(
 std::vector<torch::Tensor> myKakuritsu_cpu_forward(
     torch::Tensor input,
     torch::Tensor weights,
-    torch::Tensor Kakuritsu);
+    float Kakuritsu);
 
 std::vector<torch::Tensor> myKakuritsu_cpu_backward(
     torch::Tensor grad_output,
@@ -56,8 +56,9 @@ std::vector<torch::Tensor> myKakuritsu_cpu_backward(
 std::vector<torch::Tensor> myKakuritsu_forward(
     torch::Tensor input,
     torch::Tensor weights,
-    torch::Tensor Kakuritsu) 
+    float Kakuritsu) 
 {
+    //printf("Debug: Recieved Kakuritsu %2f\n", Kakuritsu);
     if(input.type().is_cuda())
 	    return myKakuritsu_cuda_forward(input, weights, Kakuritsu);
     else

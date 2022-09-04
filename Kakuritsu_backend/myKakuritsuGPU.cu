@@ -27,13 +27,13 @@
 #include <curand_kernel.h>
 #include <vector>
 
-__global__ void myCell_forward_kernel(const float* input, const float* weight, const float* Kakuritsu, float* output, const int Neuros, const int InputDim, const unsigned int timeNow) 
+__global__ void myCell_forward_kernel(const float* input, const float* weight, float Kakuritsu, float* output, const int Neuros, const int InputDim, const unsigned int timeNow) 
 {
 	//Here InputDim == NumberOfSynapses
 	const int CellID = threadIdx.x;
 	const int BatchID = blockIdx.x;
 	const float *myWeightBase = weight + CellID * InputDim;
-	const float *myKakuriBase = Kakuritsu + CellID * InputDim;
+	//const float *myKakuriBase = Kakuritsu + CellID * InputDim;
 	const float *myInputBase = input + BatchID * InputDim;
 	float *myOutput = output + BatchID * Neuros + CellID;
 	
@@ -44,7 +44,7 @@ __global__ void myCell_forward_kernel(const float* input, const float* weight, c
 
 	for(int i=0; i<InputDim; i++)
 	{
-		if(curand_uniform(&RandState) < myKakuriBase[i])
+		if(curand_uniform(&RandState) < Kakuritsu)
 		    *myOutput += myWeightBase[i] * myInputBase[i];
 	}
 
@@ -101,7 +101,7 @@ __global__ void ms_demo_matmul_kernel(
 std::vector<torch::Tensor> myKakuritsu_cuda_forward(
     torch::Tensor input,
     torch::Tensor weights,
-    torch::Tensor Kakuritsu)
+    float Kakuritsu)
 {
     const int Batchsize = input.size(0);
     const int InputDim = input.size(1);
@@ -111,10 +111,10 @@ std::vector<torch::Tensor> myKakuritsu_cuda_forward(
 
     float *pGPUinput = input.data<float>();
     float *pGPUweights = weights.data<float>();
-    float *pGPUKakuritsu = Kakuritsu.data<float>(); 
+    //float *pGPUKakuritsu = Kakuritsu.data<float>(); 
     float *pGPUoutput = output.data<float>();
 
-    myCell_forward_kernel<<<Batchsize, Neuros>>>(pGPUinput, pGPUweights, pGPUKakuritsu, pGPUoutput, Neuros, InputDim, (unsigned int)time(NULL));
+    myCell_forward_kernel<<<Batchsize, Neuros>>>(pGPUinput, pGPUweights, Kakuritsu, pGPUoutput, Neuros, InputDim, (unsigned int)time(NULL));
 
     return {output};
 }

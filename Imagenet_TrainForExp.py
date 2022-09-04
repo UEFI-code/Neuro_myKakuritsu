@@ -45,7 +45,7 @@ parser.add_argument('-b', '--batch-size', default=64, type=int,
                     help='mini-batch size (default: 64), this is the total '
                          'batch size of all GPUs on the current node when '
                          'using Data Parallel or Distributed Data Parallel')
-parser.add_argument('--lr', '--learning-rate', default=0.1, type=float,
+parser.add_argument('--lr', '--learning-rate', default=0.01, type=float,
                     metavar='LR', help='initial learning rate', dest='lr')
 parser.add_argument('--momentum', default=0.9, type=float, metavar='M',
                     help='momentum')
@@ -394,7 +394,17 @@ def validate(val_loader, model, criterion, args):
 
     # switch to evaluate mode
     model.eval()
-
+    '''
+    if(args.arch == 'Kakuritsu'):
+        print('Set Kakuritsu to 1.0')
+        model.exp.li1.cpu()
+        model.exp.li2.cpu()
+        print(model.exp.li1.Kakuritsu)
+        #model.exp.li1.Kakuritsu = nn.Parameter(torch.ones(1000, 2048)*0.5)#.cuda(args.gpu)
+        #model.exp.li2.Kakuritsu = nn.Parameter(torch.ones(1000, 1000)*0.5)#.cuda(args.gpu)
+        model.exp.li1.cuda(args.gpu)
+        model.exp.li2.cuda(args.gpu)
+    '''
     run_validate(val_loader)
     if args.distributed:
         top1.all_reduce()

@@ -24,11 +24,11 @@
 #include <stdlib.h>
 #include <vector>
 
-void myCell_forward_kernel_cpu(int BatchID, int CellID, const float* input, const float* weight, const float* Kakuritsu, float* output, const int Neuros, const int InputDim, const unsigned int timeNow) 
+void myCell_forward_kernel_cpu(int BatchID, int CellID, const float* input, const float* weight, float Kakuritsu, float* output, const int Neuros, const int InputDim, const unsigned int timeNow) 
 {
 	//Here InputDim == NumberOfSynapses
 	const float *myWeightBase = weight + CellID * InputDim;
-	const float *myKakuriBase = Kakuritsu + CellID * InputDim;
+	//const float *myKakuriBase = Kakuritsu + CellID * InputDim;
 	const float *myInputBase = input + BatchID * InputDim;
 	float *myOutput = output + BatchID * Neuros + CellID;
 	
@@ -40,7 +40,7 @@ void myCell_forward_kernel_cpu(int BatchID, int CellID, const float* input, cons
 	for(int i=0; i<InputDim; i++)
 	{
 		RandNum = (rand() % 4096) / 4096.0;
-		if(RandNum < myKakuriBase[i])
+		if(RandNum < Kakuritsu)
 		    *myOutput += myWeightBase[i] * myInputBase[i];
 		//printf("myOutput = %f\n", *myOutput);
 	}
@@ -69,7 +69,7 @@ void myKasoCell_backward_kernel_cpu(int BatchID, int KasoCellID, const float* in
 std::vector<torch::Tensor> myKakuritsu_cpu_forward(
     torch::Tensor input,
     torch::Tensor weights,
-    torch::Tensor Kakuritsu)
+    float Kakuritsu)
 {
     const int Batchsize = input.size(0);
     const int InputDim = input.size(1);
@@ -79,7 +79,7 @@ std::vector<torch::Tensor> myKakuritsu_cpu_forward(
 
     float *pCPUinput = input.data_ptr<float>();
     float *pCPUweights = weights.data_ptr<float>();
-    float *pCPUKakuritsu = Kakuritsu.data_ptr<float>();
+    //float *pCPUKakuritsu = Kakuritsu.data_ptr<float>();
     float *pCPUoutput = output.data_ptr<float>();
 
     /*
@@ -94,7 +94,7 @@ std::vector<torch::Tensor> myKakuritsu_cpu_forward(
 
     for(int i = 0; i < Batchsize; i++)
         for(int j = 0; j < Neuros; j++)
-    	    myCell_forward_kernel_cpu(i, j, pCPUinput, pCPUweights, pCPUKakuritsu, pCPUoutput, Neuros, InputDim, (unsigned int)time(NULL));
+    	    myCell_forward_kernel_cpu(i, j, pCPUinput, pCPUweights, Kakuritsu, pCPUoutput, Neuros, InputDim, (unsigned int)time(NULL));
 
     return {output};
 }
