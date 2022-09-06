@@ -58,6 +58,8 @@ parser.add_argument('--resume', default='', type=str, metavar='PATH',
                     help='path to latest checkpoint (default: none)')
 parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true',
                     help='evaluate model on validation set')
+parser.add_argument('-sw', '--switch', dest='switch', action='store_true',
+                            help='Switch Dropout or myKakuritsu during Validation')
 parser.add_argument('--pretrained', dest='pretrained', action='store_true',
                     help='use pre-trained model')
 parser.add_argument('--world-size', default=-1, type=int,
@@ -393,12 +395,16 @@ def validate(val_loader, model, criterion, args):
         prefix='Test: ')
 
     # switch to evaluate mode
-    model.eval()
+    model.base.eval()
     # Here the eval() effect the Batch Normalization and Dropout. If the model does not have dropout, then only effect BN.
-    if(args.arch == 'Kakuritsu'):
-        print('Set Kakuritsu to 1.0')
-        model.exp.li1.p = 1.0
-        model.exp.li2.p = 1.0
+    if(args.switch == True):
+        if(args.arch == 'Kakuritsu'):
+            print('Set Kakuritsu to 1.0')
+            model.exp.li1.p = 1.0
+            model.exp.li2.p = 1.0
+        elif(args.arch == 'Dropout'):
+            print('Turning off the Dropout')
+            model.exp.eval()
 
     run_validate(val_loader)
     if args.distributed:

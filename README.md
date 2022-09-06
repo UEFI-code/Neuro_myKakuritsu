@@ -43,12 +43,13 @@ optional arguments:
   -p N, --print-freq N  print frequency (default: 10)
   --resume PATH         path to latest checkpoint (default: none)
   -e, --evaluate        evaluate model on validation set
+  -sw, --switch         Switch Dropout or myKakuritsu during Validation
   --pretrained          use pre-trained model
-  --world-size WORLD\_SIZE
+  --world-size WORLD_SIZE
                         number of nodes for distributed training
   --rank RANK           node rank for distributed training
-  --dist-url DIST\_URL   url used to set up distributed training
-  --dist-backend DIST\_BACKEND
+  --dist-url DIST_URL   url used to set up distributed training
+  --dist-backend DIST_BACKEND
                         distributed backend
   --seed SEED           seed for initializing training.
   --gpu GPU             GPU id to use.
@@ -57,6 +58,10 @@ optional arguments:
                         node or multi node data parallel training
   --dummy               use fake data to benchmark
 ```
+
+## Archieve
+
+Archieved code, pth files, experiment results can be found [here](Archieve/)
 
 ## Credit
 
