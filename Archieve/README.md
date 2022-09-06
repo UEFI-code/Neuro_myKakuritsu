@@ -1,5 +1,9 @@
 # Archieve
 
+This folder contains archieved experiments.
+
+You can copy the py files and pth file into project's root folder(Replace) to test.
+
 ## ResNet152\_K
 
 This folder contains pretrained ResNet152 CNN part and myKakuritsu based FC 2 Layers, each layer has 1000 neural cells.
