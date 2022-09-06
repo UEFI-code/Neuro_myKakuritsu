@@ -394,17 +394,12 @@ def validate(val_loader, model, criterion, args):
 
     # switch to evaluate mode
     model.eval()
-    '''
+    # Here the eval() effect the Batch Normalization and Dropout. If the model does not have dropout, then only effect BN.
     if(args.arch == 'Kakuritsu'):
         print('Set Kakuritsu to 1.0')
-        model.exp.li1.cpu()
-        model.exp.li2.cpu()
-        print(model.exp.li1.Kakuritsu)
-        #model.exp.li1.Kakuritsu = nn.Parameter(torch.ones(1000, 2048)*0.5)#.cuda(args.gpu)
-        #model.exp.li2.Kakuritsu = nn.Parameter(torch.ones(1000, 1000)*0.5)#.cuda(args.gpu)
-        model.exp.li1.cuda(args.gpu)
-        model.exp.li2.cuda(args.gpu)
-    '''
+        model.exp.li1.p = 1.0
+        model.exp.li2.p = 1.0
+
     run_validate(val_loader)
     if args.distributed:
         top1.all_reduce()

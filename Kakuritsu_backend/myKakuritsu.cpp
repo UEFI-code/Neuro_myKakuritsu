@@ -58,7 +58,7 @@ std::vector<torch::Tensor> myKakuritsu_forward(
     torch::Tensor weights,
     float Kakuritsu) 
 {
-    //printf("Debug: Recieved Kakuritsu %2f\n", Kakuritsu);
+    //printf("Debug: Recieved Kakuritsu %.2f\n", Kakuritsu);
     if(input.type().is_cuda())
 	    return myKakuritsu_cuda_forward(input, weights, Kakuritsu);
     else
