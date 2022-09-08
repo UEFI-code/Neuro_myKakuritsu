@@ -217,7 +217,12 @@ def main_worker(gpu, ngpus_per_node, args):
                 # Map model to be loaded to specified single gpu.
                 loc = 'cuda:{}'.format(args.gpu)
                 checkpoint = torch.load(args.resume, map_location=loc)
-            args.start_epoch = checkpoint['epoch']
+            
+            if args.evaluate:
+                args.start_epoch = checkpoint['epoch']
+            else:
+                args.start_epoch = checkpoint['epoch'] + 1
+            
             best_acc1 = checkpoint['best_acc1']
             if args.gpu is not None:
                 # best_acc1 may be from a checkpoint from a different GPU
@@ -428,6 +433,7 @@ def save_checkpoint(state, is_best):
     filename = 'Exp_ResNet152_' + state['arch'] + '.pth'
     torch.save(state, filename)
     if is_best:
+        print('Saving the best...')
         shutil.copyfile(filename, filename[:-4] + '_best.pth')
 
 class Summary(Enum):
