@@ -327,7 +327,14 @@ def train(train_loader, model, criterion, optimizer, epoch, args):
 
     # switch to train mode
     model.train()
-
+    if(args.arch == 'Dropout'):
+        print('Turned on Dropout')
+    
+    elif(args.arch == 'Kakuritsu'):
+        print('Set Kakuritsu to 0.5')
+        model.exp.li1.p = 0.5
+        model.exp.li2.p = 0.5
+    
     end = time.time()
     for i, (images, target) in enumerate(train_loader):
         # measure data loading time
