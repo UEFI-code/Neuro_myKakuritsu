@@ -10,15 +10,15 @@ This folder contains pretrained ResNet152 CNN part and myKakuritsu based FC 2 La
 
 The pretrained ResNet152 CNN part is static(Not trainable), the FC 2 layers can be trained.
 
-Set learning rate to 0.01, Kakuritsu rate(p) 0.5, trained 20 epochs on ILSVRC2012, best pth saved at epoch 13.
+Set learning rate to 0.01, Kakuritsu rate(p) 0.5, trained 20 epochs on ILSVRC2012, best pth saved at epoch 10.
 
 Keep p = 0.5 in Validation:
 
-Acc@1 Avg= 60.832 Acc@5 Avg= 85.210
+Acc@1 Avg= 67.110 Acc@5 Avg= 87.186
 
 Switch p = 1.0 in Validation:
 
-Acc@1 Avg= 76.236 Acc@5 Avg= 92.840
+Acc@1 Avg= 75.718 Acc@5 Avg= 92.240
 
 ## ResNet152\_D
 
