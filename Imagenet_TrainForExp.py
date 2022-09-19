@@ -218,11 +218,7 @@ def main_worker(gpu, ngpus_per_node, args):
                 loc = 'cuda:{}'.format(args.gpu)
                 checkpoint = torch.load(args.resume, map_location=loc)
             
-            if args.evaluate:
-                args.start_epoch = checkpoint['epoch']
-            else:
-                args.start_epoch = checkpoint['epoch'] + 1
-            
+            args.start_epoch = checkpoint['epoch']
             best_acc1 = checkpoint['best_acc1']
             if args.gpu is not None:
                 # best_acc1 may be from a checkpoint from a different GPU
