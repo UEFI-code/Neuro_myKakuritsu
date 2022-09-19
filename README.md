@@ -1,6 +1,6 @@
 # Neuro myKakuritsu Research Code with PyTorch
 
-We are trying to delete LFS because we have no money to buy the quato. We might migrate to [The NoLFS fork](https://github.com/UEFI-code/Neuro_myKakuritsu_NoLFS) if we failed to release the quato and then delete this repo.
+We will no longer upload LFS because we have no money to buy the quato.
 
 However, we will try to upload the Archieved pth files to [Google Drive](https://drive.google.com/drive/folders/1J2_FkFKFnkagXT4x3rEZagRy-eK4HX8w?usp=sharing).
 
