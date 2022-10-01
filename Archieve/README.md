@@ -40,7 +40,7 @@ Acc@1 Avg= 72.996 Acc@5 Avg= 90.210
 
 ## ResNet152\_W
 
-This folder contains ResNet152 CNN part and Dropout based FC 2 Layers, each layer has 1000 neural cells.
+This folder contains ResNet152 CNN part and FC 2 Layers, each layer has 1000 neural cells.
 
 The pretrained ResNet152 CNN part is static(Not trainable), the FC 2 layers can be trained.
 
