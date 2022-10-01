@@ -38,4 +38,24 @@ Switch p = 1.0 in Validation:
 
 Acc@1 Avg= 72.996 Acc@5 Avg= 90.210
 
+## ResNet152\_W
+
+This folder contains ResNet152 CNN part and Dropout based FC 2 Layers, each layer has 1000 neural cells.
+
+The pretrained ResNet152 CNN part is static(Not trainable), the FC 2 layers can be trained.
+
+Set learning rate to 0.01, without Dropout or Kakurtistu, trained 20 epochs on ILSVRC2012, best pth saved at epoch 18.
+
+keep without Dropout or Kakurtistu in Validation:
+
+Acc@1 Avg= 76.124 Acc@5 Avg= 93.134
+
+Apply Kakurtisu with p = 0.5 in Validation:
+
+Acc@1 Avg= 59.630 Acc@5 Avg= 85.538
+
+Apply Dropout with p = 0.5 in Validation:
+
+Acc@1 Avg= 38.678 Acc@5 Avg= 46.282
+
 
