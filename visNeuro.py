@@ -57,10 +57,12 @@ if __name__ == "__main__":
 
 	#testDraw()
 	#exit(0)
-	
+
 	baseModel = torchvision_resnet_hack.resnet152(pretrained = False, ConvOnly = True)
 	expModel = Pure_myKakuritsu.PureKakuritsu()
 	model = OneModel(baseModel, expModel)
 	checkpoint = torch.load('kakuritsu.pth', map_location = 'cpu')
 	model.load_state_dict(checkpoint['state_dict'])
-	print(model.exp.li1.weight[random.randint(0,1000)])
+	#print(model.exp.li1.weight[random.randint(0,1000)])
+	param = model.exp.li1.weight[random.randint(0,1000)].tolist()
+	draw(param, 16, 50, 'figure')
