@@ -46,5 +46,6 @@ if __name__ == "__main__":
 	baseModel = torchvision_resnet_hack.resnet152(pretrained = False, ConvOnly = True)
 	expModel = Pure_myKakuritsu.PureKakuritsu()
 	model = OneModel(baseModel, expModel)
-	model.load_state_dict(torch.load('kakuritsu.pth', map_location = 'cpu'))
+	checkpoint = torch.load('kakuritsu.pth', map_location = 'cpu')
+	model.load_state_dict(checkpoint['state_dict'])
 	print(model.exp.li1.weight[random.randint(0,1000)])
