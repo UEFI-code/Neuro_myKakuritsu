@@ -3,7 +3,9 @@ import numpy as np
 import random
 
 def draw(x = [0.1, 0.2, 0.3, 0.1, 0.15], row = 2, scaleR = 50):
-	tmp = np.zeros((1024,1024,3))
+	#tmp = np.zeros((1024,1024,3))
+	# Caclulate the Resolution
+	tmp = np.zeros((row*scaleR*2, row*scaleR*2, 3))
 	nowX = 0
 	baselineY = 0
 	maxR = 0
@@ -23,9 +25,11 @@ def draw(x = [0.1, 0.2, 0.3, 0.1, 0.15], row = 2, scaleR = 50):
 		maxR = 0
 
 	cv2.imwrite("out.jpg", tmp)
+	cv2.imshow("out", tmp)
+	cv2.waitKey(0)
 
-
-paint = []
-for i in range(64):
-	paint.append(random.random())
-draw(paint, 8)
+if __name__ == "__main__":
+	paint = []
+	for i in range(64):
+		paint.append(random.random())
+	draw(paint, 8, 50)
