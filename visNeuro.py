@@ -1,6 +1,20 @@
 import cv2
 import numpy as np
 import random
+import torch
+import Pure_myKakuritsu
+import torchvision_resnet_hack
+
+class OneModel(torch.nn.Module):
+        def __init__(self, base, exp):
+            super(OneModel, self).__init__()
+            self.base = base
+            self.exp = exp
+        
+        def forward(self, x):
+            x = self.base(x)
+            x = self.exp(x)
+            return x
 
 def draw(x = [0.1, 0.2, 0.3, 0.1, 0.15], row = 2, scaleR = 50, title = 'out'):
 	#tmp = np.zeros((1024,1024,3))
@@ -29,7 +43,8 @@ def draw(x = [0.1, 0.2, 0.3, 0.1, 0.15], row = 2, scaleR = 50, title = 'out'):
 	cv2.waitKey(0)
 
 if __name__ == "__main__":
-	paint = []
-	for i in range(64):
-		paint.append(random.random())
-	draw(paint, 8, 50, 'try')
+	baseModel = torchvision_resnet_hack.resnet152(pretrained = False, ConvOnly = True)
+	expModel = Pure_myKakuritsu.PureKakuritsu()
+	model = OneModel(baseModel, expModel)
+	model.load_state_dict(torch.load('kakuritsu.pth', map_location = 'cpu'))
+	print(model.exp.li1.weight[random.randint(0,1000)])
