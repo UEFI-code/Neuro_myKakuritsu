@@ -16,7 +16,7 @@ class OneModel(torch.nn.Module):
             x = self.exp(x)
             return x
 
-def draw(x = [0.1, 0.2, 0.3, 0.1, 0.15], row = 2, scaleR = 50, title = 'out'):
+def draw(x = [0.1, -0.2, 0.3, -0.1, 0.15], row = 2, scaleR = 50, title = 'out'):
 	#tmp = np.zeros((1024,1024,3))
 	# Caclulate the Resolution
 	tmp = np.zeros((row*scaleR*2, row*scaleR*2, 3))
@@ -28,11 +28,16 @@ def draw(x = [0.1, 0.2, 0.3, 0.1, 0.15], row = 2, scaleR = 50, title = 'out'):
 		for j in range(row):
 			index = i * row + j
 			thisR = int(x[index] * scaleR)
+			if thisR > 0:
+				color = (0, 200, 0)
+			else:
+				color = (0, 0, 200)
+				thisR = 0 - thisR
 			nowX += thisR + 10
-			cv2.circle(tmp, (nowX, baselineY + thisR + 10), thisR, (0,200,0))
+			cv2.circle(tmp, (nowX, baselineY + thisR + 10), thisR, color)
+			nowX += thisR
 			if thisR > maxR:
 				maxR = thisR
-			nowX += thisR
 
 		baselineY += maxR * 2
 		nowX = 0
@@ -42,7 +47,17 @@ def draw(x = [0.1, 0.2, 0.3, 0.1, 0.15], row = 2, scaleR = 50, title = 'out'):
 	cv2.imshow(title, tmp)
 	cv2.waitKey(0)
 
+def testDraw():
+	x = []
+	for _ in range(64):
+		x.append(random.random() * random.randint(-1, 1))
+	draw(x, 8, 50, 'out')
+
 if __name__ == "__main__":
+
+	#testDraw()
+	#exit(0)
+	
 	baseModel = torchvision_resnet_hack.resnet152(pretrained = False, ConvOnly = True)
 	expModel = Pure_myKakuritsu.PureKakuritsu()
 	model = OneModel(baseModel, expModel)
