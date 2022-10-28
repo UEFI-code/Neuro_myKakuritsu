@@ -22,6 +22,10 @@ Switch p = 1.0 in Validation:
 
 Acc@1 Avg= 75.718 Acc@5 Avg= 92.240
 
+Apply Dropout with p = 0.5 in Validation:
+
+Acc@1 39.090 Acc@5 Avg= 46.162
+
 ## ResNet152\_D
 
 This folder contains ResNet152 CNN part and Dropout based FC 2 Layers, each layer has 1000 neural cells.
